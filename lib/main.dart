@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:htd_poc/ui/pages/list_page.dart';
 
 void main() {
   runApp(AppRoot());
@@ -13,7 +14,7 @@ class AppRoot extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Placeholder(),
+      home: ListPage(),
     );
   }
 }
