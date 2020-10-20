@@ -1,34 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:htd_poc/bloc/user_page/user_page_bloc.dart';
+import 'package:htd_poc/bloc/user/user_bloc.dart';
+import 'package:htd_poc/model/post.dart';
 import 'package:htd_poc/model/user.dart';
-import 'package:htd_poc/ui/widgets/favorite_indicator.dart';
+import 'package:htd_poc/ui/widgets/post_widget.dart';
 
-class UserPage extends StatelessWidget {
+class PostDetailsPage extends StatelessWidget {
+  final Post post;
   final int userId;
 
-  const UserPage({Key key, @required this.userId}) : super(key: key);
+  const PostDetailsPage({Key key, @required this.post, @required this.userId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<UserPageBloc>(
-      create: (_) => UserPageBloc()..add(UserPageEvent.loadUser(userId)),
+    return BlocProvider<UserBloc>(
+      create: (_) => UserBloc()..add(UserEvent.loadUser(userId)),
       child: Scaffold(
         appBar: AppBar(
-          title: Text("User Profile"),
+          title: Text("Details"),
         ),
         body: Container(
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.only(top: 4.0),
-          child: BlocBuilder<UserPageBloc, UserPageState>(
-            builder: (BuildContext context, UserPageState state) {
-              if (state.user != null) {
-                return _UserInfo(user: state.user);
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            },
+          child: Column(
+            children: [
+              PostWidget(post: post, detailsMode: true),
+              BlocBuilder<UserBloc, UserState>(
+                builder: (BuildContext context, UserState state) {
+                  if (state.user != null) {
+                    return _UserInfo(user: state.user);
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
+            ],
           ),
         ),
       ),
@@ -49,6 +57,7 @@ class _UserInfo extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: ListView(
           shrinkWrap: true,
+          primary: false,
           padding: const EdgeInsets.only(),
           children: [
             _ProfileHeader(user: user),
@@ -72,36 +81,27 @@ class _ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Row(
+    return Expanded(
+        child: Column(
       children: [
-        Expanded(
-            child: Column(
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                user.name,
-                style: theme.primaryTextTheme.headline4
-                    .copyWith(fontWeight: FontWeight.w400),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                '@${user.username}',
-                style: theme.primaryTextTheme.headline6.copyWith(
-                    fontWeight: FontWeight.w300, color: theme.accentColor),
-              ),
-            )
-          ],
-        )),
-        FavoriteIndicator(
-          userId: user.id,
-          showAsButton: true,
-          iconSize: 48.0,
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            user.name,
+            style: theme.primaryTextTheme.headline4
+                .copyWith(fontWeight: FontWeight.w400),
+          ),
         ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            '@${user.username}',
+            style: theme.primaryTextTheme.headline6.copyWith(
+                fontWeight: FontWeight.w300, color: theme.accentColor),
+          ),
+        )
       ],
-    );
+    ));
   }
 }
 

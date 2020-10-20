@@ -5,7 +5,7 @@ abstract class FavoritesEvent {
 }
 
 class _ToggleFavorite implements FavoritesEvent {
-  final int userId;
+  final int postId;
 
-  _ToggleFavorite(this.userId);
+  _ToggleFavorite(this.postId);
 }

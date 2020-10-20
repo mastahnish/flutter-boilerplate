@@ -4,14 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:htd_poc/bloc/favorites/favorites_bloc.dart';
 
 class FavoriteIndicator extends StatelessWidget {
-  final int userId;
+  final int postId;
 
   final bool showAsButton;
   final double iconSize;
 
   const FavoriteIndicator(
       {Key key,
-      @required this.userId,
+      @required this.postId,
       this.showAsButton = false,
       this.iconSize = 24.0})
       : super(key: key);
@@ -21,7 +21,7 @@ class FavoriteIndicator extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     return BlocBuilder<FavoritesBloc, FavoritesState>(
         builder: (BuildContext context, FavoritesState state) {
-      final bool isFavorite = state.favoriteUsers.contains(userId);
+      final bool isFavorite = state.favoritePosts.contains(postId);
       if (showAsButton) {
         return IconButton(
           icon: Icon(isFavorite
@@ -29,7 +29,7 @@ class FavoriteIndicator extends StatelessWidget {
               : Icons.favorite_border_rounded),
           color: isFavorite ? theme.accentColor : theme.dividerColor,
           onPressed: () =>
-              context.bloc<FavoritesBloc>().add(FavoritesEvent.toggle(userId)),
+              context.bloc<FavoritesBloc>().add(FavoritesEvent.toggle(postId)),
           iconSize: iconSize,
         );
       }

@@ -1,9 +1,9 @@
 part of 'favorites_bloc.dart';
 
 class FavoritesState {
-  final Set<int> favoriteUsers;
+  final Set<int> favoritePosts;
 
-  FavoritesState._(this.favoriteUsers);
+  FavoritesState._(this.favoritePosts);
 
   factory FavoritesState.initial() => FavoritesState._({});
   FavoritesState modified(Set<int> favoriteUsers) =>

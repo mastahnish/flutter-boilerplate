@@ -13,9 +13,9 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
   @override
   Stream<FavoritesState> mapEventToState(FavoritesEvent event) async* {
     if (event is _ToggleFavorite) {
-      _favoritesRepository.setStatus(userId: event.userId);
-      final Set<int> favoriteUsers = _favoritesRepository.favorites;
-      yield state.modified(favoriteUsers);
+      _favoritesRepository.setStatus(postId: event.postId);
+      final Set<int> favoritePosts = _favoritesRepository.favorites;
+      yield state.modified(favoritePosts);
     }
   }
 }
