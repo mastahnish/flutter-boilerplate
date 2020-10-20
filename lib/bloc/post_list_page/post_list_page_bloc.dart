@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:htd_poc/main.dart';
 import 'package:htd_poc/model/post.dart';
 import 'package:htd_poc/services/posts_repository.dart';
 
@@ -8,10 +9,10 @@ part 'post_list_page_state.dart';
 const _postsPerPage = 5;
 
 class PostListPageBloc extends Bloc<PostListPageEvent, PostListPageState> {
-  final PostsRepository _postsRepository = PostsRepository();
+  final PostsRepository _postsRepository = locator.get();
 
   PostListPageBloc() : super(PostListPageState.initial()) {
-    this.add(PostListPageEvent.tryLoadNextPage());
+    // this.add(PostListPageEvent.tryLoadNextPage());
   }
 
   @override

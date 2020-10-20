@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:htd_poc/bloc/favorites/favorites_bloc.dart';
 import 'package:htd_poc/bloc/user_page/user_page_bloc.dart';
 import 'package:htd_poc/model/post.dart';
 import 'package:htd_poc/ui/pages/user_page.dart';
+import 'package:htd_poc/ui/widgets/favorite_indicator.dart';
 
 class PostWidget extends StatelessWidget {
   final Post post;
@@ -15,7 +17,11 @@ class PostWidget extends StatelessWidget {
     return InkWell(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
-            builder: (BuildContext context) => UserPage(userId: post.userId)),
+          builder: (_) => BlocProvider.value(
+            value: context.bloc<FavoritesBloc>(),
+            child: UserPage(userId: post.userId),
+          ),
+        ),
       ),
       child: _PostBody(post: post),
     );
@@ -73,17 +79,27 @@ class _UserHandle extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(right: 4.0),
       alignment: Alignment.topRight,
-      child: BlocProvider<UserPageBloc>(
-          create: (_) => UserPageBloc()..add(UserPageEvent.loadUser(userId)),
-          child: BlocBuilder<UserPageBloc, UserPageState>(
-            builder: (BuildContext context, UserPageState state) {
-              final TextStyle style = theme.accentTextTheme.subtitle2
-                  .copyWith(color: theme.accentColor);
-              return state.user != null
-                  ? Text('@${state.user.username}', style: style)
-                  : Text('loading...', style: style);
-            },
-          )),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FavoriteIndicator(userId: userId, iconSize: 14.0),
+          const SizedBox(width: 2.0),
+          BlocProvider<UserPageBloc>(
+              create: (_) =>
+                  UserPageBloc()..add(UserPageEvent.loadUser(userId)),
+              child: BlocBuilder<UserPageBloc, UserPageState>(
+                builder: (BuildContext context, UserPageState state) {
+                  final TextStyle style = theme.accentTextTheme.subtitle2
+                      .copyWith(
+                          color: theme.accentColor,
+                          fontWeight: FontWeight.w300);
+                  return state.user != null
+                      ? Text('@${state.user.username}', style: style)
+                      : Text('loading...', style: style);
+                },
+              )),
+        ],
+      ),
     );
   }
 }

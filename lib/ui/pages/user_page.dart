@@ -97,7 +97,7 @@ class _ProfileHeader extends StatelessWidget {
         )),
         FavoriteIndicator(
           userId: user.id,
-          clickable: true,
+          showAsButton: true,
           iconSize: 48.0,
         ),
       ],

@@ -30,7 +30,7 @@ class PostsRepository {
         final Map jsonResponse = jsonDecode(response.body);
         return jsonResponse.isNotEmpty ? Post.fromJson(jsonResponse) : null;
       } else {
-        throw "request error";
+        return null;
       }
     });
   }
