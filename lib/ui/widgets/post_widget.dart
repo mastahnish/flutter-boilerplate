@@ -12,7 +12,7 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
             builder: (BuildContext context) => UserPage(userId: post.userId)),
@@ -56,25 +56,34 @@ class _PostBody extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          margin: const EdgeInsets.only(right: 4.0),
-          alignment: Alignment.topRight,
-          child: BlocProvider<UserPageBloc>(
-              create: (_) =>
-                  UserPageBloc()..add(UserPageEvent.loadUser(post.userId)),
-              child: BlocBuilder<UserPageBloc, UserPageState>(
-                builder: (BuildContext context, UserPageState state) {
-                  return state.user != null
-                      ? Text(
-                          '@${state.user.username}',
-                          style: theme.accentTextTheme.subtitle2
-                              .copyWith(color: theme.accentColor),
-                        )
-                      : const SizedBox();
-                },
-              )),
-        ),
+        _UserHandle(userId: post.userId),
       ],
+    );
+  }
+}
+
+class _UserHandle extends StatelessWidget {
+  final int userId;
+
+  const _UserHandle({Key key, @required this.userId}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return Container(
+      margin: const EdgeInsets.only(right: 4.0),
+      alignment: Alignment.topRight,
+      child: BlocProvider<UserPageBloc>(
+          create: (_) => UserPageBloc()..add(UserPageEvent.loadUser(userId)),
+          child: BlocBuilder<UserPageBloc, UserPageState>(
+            builder: (BuildContext context, UserPageState state) {
+              final TextStyle style = theme.accentTextTheme.subtitle2
+                  .copyWith(color: theme.accentColor);
+              return state.user != null
+                  ? Text('@${state.user.username}', style: style)
+                  : Text('loading...', style: style);
+            },
+          )),
     );
   }
 }

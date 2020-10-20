@@ -14,4 +14,7 @@ class Address {
   Address(this.street, this.suite, this.city, this.zipcode, this.geo);
 
   factory Address.fromJson(dynamic json) => _$AddressFromJson(json);
+
+  @override
+  String toString() => '$street $suite, $zipcode, $city';
 }
