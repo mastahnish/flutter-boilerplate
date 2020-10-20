@@ -18,27 +18,37 @@ class PostListPage extends StatelessWidget {
         body: SingleChildScrollView(
           child: BlocBuilder<PostListPageBloc, PostListPageState>(
             builder: (BuildContext context, PostListPageState state) {
-              return Column(
-                children: [
-                  ListView.builder(
-                      primary: false,
-                      shrinkWrap: true,
-                      itemCount: state.loadedPosts.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final Post post = state.loadedPosts[index];
-                        return PostWidget(post: post);
-                      }),
-                  ListTile(
-                    title: RaisedButton(
-                      onPressed: () {
-                        context
-                            .bloc<PostListPageBloc>()
-                            .add(PostListPageEvent.tryLoadNextPage());
-                      },
-                      child: Text("Load more..."),
-                    ),
-                  )
-                ],
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0)
+                    .copyWith(top: 8.0),
+                child: Column(
+                  children: [
+                    ListView.builder(
+                        primary: false,
+                        shrinkWrap: true,
+                        itemCount: state.loadedPosts.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final Post post = state.loadedPosts[index];
+                          final Widget postWidget = PostWidget(post: post);
+                          return index < (state.loadedPosts.length - 1)
+                              ? Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: postWidget,
+                                )
+                              : postWidget;
+                        }),
+                    ListTile(
+                      title: RaisedButton(
+                        onPressed: () {
+                          context
+                              .bloc<PostListPageBloc>()
+                              .add(PostListPageEvent.tryLoadNextPage());
+                        },
+                        child: Text("Load more..."),
+                      ),
+                    )
+                  ],
+                ),
               );
             },
           ),
