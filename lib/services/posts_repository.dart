@@ -1,10 +1,9 @@
-import 'dart:convert';
-
+import 'package:htd_poc/main.dart';
 import 'package:htd_poc/model/post.dart';
-import 'package:http/http.dart';
+import 'package:htd_poc/services/api_service.dart';
 
 class PostsRepository {
-  static const _apiUrl = "http://jsonplaceholder.typicode.com";
+  final ApiService _apiService = locator.get();
 
   final List<Post> _cachedPosts = [];
 
@@ -15,23 +14,13 @@ class PostsRepository {
     final int cacheSize = _cachedPosts.length;
     final List<Future<Post>> requests = [];
     for (int i = 0; i < count; i++) {
-      final Future<Post> request = _fetchSinglePost(cacheSize + i + 1);
+      final Future<Post> request =
+          _apiService.fetchSinglePost(cacheSize + i + 1);
       requests.add(request);
     }
     final List<Post> newPosts = await Future.wait(requests);
     newPosts.removeWhere((Post post) => post == null);
     _cachedPosts.addAll(newPosts);
     return newPosts;
-  }
-
-  Future<Post> _fetchSinglePost(int id) async {
-    return get("$_apiUrl/posts/$id").then((Response response) {
-      if (response.statusCode == 200) {
-        final Map jsonResponse = jsonDecode(response.body);
-        return jsonResponse.isNotEmpty ? Post.fromJson(jsonResponse) : null;
-      } else {
-        return null;
-      }
-    });
   }
 }

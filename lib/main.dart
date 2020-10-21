@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:htd_poc/bloc/favorites/favorites_bloc.dart';
+import 'package:htd_poc/services/api_service.dart';
 import 'package:htd_poc/services/favorites_repository.dart';
 import 'package:htd_poc/services/posts_repository.dart';
 import 'package:htd_poc/services/users_repository.dart';
@@ -15,6 +16,7 @@ void main() {
 }
 
 void _registerServices() {
+  locator.registerLazySingleton<ApiService>(() => ApiService());
   locator.registerLazySingleton<PostsRepository>(() => PostsRepository());
   locator.registerLazySingleton<UsersRepository>(() => UsersRepository());
   locator
