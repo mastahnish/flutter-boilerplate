@@ -81,8 +81,7 @@ class _ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Expanded(
-        child: Column(
+    return Column(
       children: [
         Align(
           alignment: Alignment.centerLeft,
@@ -101,7 +100,7 @@ class _ProfileHeader extends StatelessWidget {
           ),
         )
       ],
-    ));
+    );
   }
 }
 
