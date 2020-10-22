@@ -12,4 +12,9 @@ class Post {
   Post(this.userId, this.id, this.title, this.body);
 
   factory Post.fromJson(dynamic json) => _$PostFromJson(json);
+
+  @override
+  String toString() {
+    return 'Post{userId: $userId, id: $id, title: $title, body: $body}';
+  }
 }

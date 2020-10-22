@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:htd_poc/main.dart';
@@ -48,7 +49,7 @@ class PostListPageBloc extends Bloc<PostListPageEvent, PostListPageState> {
   PostListPageState _handleActivateFilterEvent<T>(
       Filter<Post> newFilterInstance) {
     if (!state.isFilterOfTypeActive<T>()) {
-      final List<Filter<Post>> updatedFilters = state.activeFilters
+      final List<Filter<Post>> updatedFilters = [...state.activeFilters]
         ..add(newFilterInstance);
       return state.withFilters(
           applyFilters(_postsRepository.cachedPosts, updatedFilters),
@@ -58,7 +59,7 @@ class PostListPageBloc extends Bloc<PostListPageEvent, PostListPageState> {
   }
 
   PostListPageState _handleDeactivateFilterEvent<T>() {
-    final List<Filter<Post>> updatedFilters = state.activeFilters
+    final List<Filter<Post>> updatedFilters = [...state.activeFilters]
       ..removeWhere((Filter<Post> filter) => filter is T);
     return state.withFilters(
         applyFilters(_postsRepository.cachedPosts, updatedFilters),

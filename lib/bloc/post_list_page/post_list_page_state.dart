@@ -1,6 +1,6 @@
 part of 'post_list_page_bloc.dart';
 
-class PostListPageState {
+class PostListPageState extends Equatable {
   final bool canFetchMore;
   final List<Post> loadedPosts;
   final List<Filter<Post>> activeFilters;
@@ -11,7 +11,7 @@ class PostListPageState {
 
   PostListPageState withNewElements(List<Post> newPosts) => PostListPageState._(
         newPosts.length >= _postsPerPage,
-        loadedPosts..addAll(newPosts),
+        [...loadedPosts, ...newPosts],
         activeFilters,
       );
 
@@ -25,4 +25,12 @@ class PostListPageState {
       activeFilters.firstWhere((Filter<Post> filter) => filter is T,
           orElse: () => null) !=
       null;
+
+  @override
+  String toString() {
+    return 'PostListPageState{canFetchMore: $canFetchMore, loadedPosts: $loadedPosts, activeFilters: $activeFilters}';
+  }
+
+  @override
+  List<Object> get props => [canFetchMore, loadedPosts, activeFilters];
 }
