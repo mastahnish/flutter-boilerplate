@@ -14,7 +14,7 @@ class PostListPage extends StatelessWidget {
       create: (_) => PostListPageBloc(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text("HTD PoC"),
+          title: Text("Flutter PoC"),
         ),
         drawer: Drawer(
           child: Builder(builder: (BuildContext context) {
