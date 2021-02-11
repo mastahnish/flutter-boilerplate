@@ -1,4 +1,4 @@
-# htd_poc
+# flutter_poc
 
 A new Flutter application.
 
