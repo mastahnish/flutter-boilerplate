@@ -1,4 +1,4 @@
-# flutter_poc
+# flutter_boilerplate
 
 A new Flutter application.
 
